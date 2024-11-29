@@ -1,8 +1,8 @@
 <template>
 
-  <div>
-    <h1>HomeView</h1>
-  </div>
+    <div>
+        <h1>AddTask</h1>
+    </div>
 
 </template>
 

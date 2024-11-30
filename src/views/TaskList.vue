@@ -82,15 +82,16 @@ export default {
 }
 
 .task__button {
-    font-size: 16px;
+    font-size: 10px;
     font-weight: 500;
     color: black;
     background-color: lightsteelblue;
-    width: 56px;
+    width: 40px;
     padding: 0 4px;
-    border: 1px solid grey;
+    border: none;
     border-radius: 3px;
     cursor: pointer;
+    text-align: center;
 }
 
 

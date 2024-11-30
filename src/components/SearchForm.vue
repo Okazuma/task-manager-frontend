@@ -34,25 +34,30 @@ export default {
 }
 
 .search-form__input {
+    height: 40px;
+    box-sizing: border-box;
     padding: 4px;
     font-size: 16px;
-    width: 80%;
+    width: 60%;
     max-width: 400px;
     border: 1px solid grey;
-    box-sizing: border-box;
-    border-radius: 3px;
+    height: 40px;
+    border-radius: 4px;
     margin-right: 16px;
+    outline: none;
 }
 
 .search-form__button {
+    height: 40px;
+    box-sizing: border-box;
     background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
     font-size: 16px;
-    border-radius: 3px;
+    border-radius: 4px;
     padding: 4px;
-    width: 56px;
+    width: 80px;
 }
 
 .search-form__button:hover {

@@ -70,16 +70,17 @@
 
 .form__button{
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 700;
     color: black;
+    display: block;
     background-color: lightsteelblue;
     width: 160px;
-    display: block;
     margin: 80px auto;
     padding:4px;
     border:1px solid grey;
     border: none;
     border-radius: 3px;
+    text-align: center;
 }
 
 

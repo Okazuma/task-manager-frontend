@@ -73,12 +73,13 @@
   font-size: 16px;
   text-align: center;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
+  padding:4px;
   color: black;
   background-color: lightsteelblue;
   width: 160px;
   display: block;
-  border: 1px solid grey;
+  border: none;
   border-radius: 3px;
 }
 

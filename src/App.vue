@@ -18,7 +18,7 @@ export default {
 <style>
 
 button {
-    all: unset;
+  all: unset;
 }
 
 </style>

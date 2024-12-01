@@ -7,26 +7,23 @@
         <SearchForm />
 
         <ul class="task__list">
-            <li class="task__item">
+            <li class="task__item" v-for="task in tasks" :key="task.id">
                 <div class="task__content">
-                    <span class="task__name">Test</span>
+                    <span class="task__name">{{ task.name }}</span>
                 </div>
                 <div class="task__actions">
-                    <button type="button" class="task__button">Edit</button>
-                    <button type="button" class="task__button">Delete</button>
-                </div>
-            </li>
-
-            <li class="task__item">
-                <div class="task__content">
-                    <span class="task__name">Test</span>
-                </div>
-                <div class="task__actions">
-                    <button type="button" class="task__button">Edit</button>
+                    <button type="button" class="task__button" @click="openEditModal(task)">Edit</button>
                     <button type="button" class="task__button">Delete</button>
                 </div>
             </li>
         </ul>
+
+        <EditModal
+        :isOpen="isModalOpen"
+        :task="selectedTask"
+        @close="isModalOpen = false"
+        @update="updateTask"
+        />
 
     </section>
 
@@ -34,13 +31,44 @@
 
 <script>
 import SearchForm from '@/components/SearchForm.vue';
+import EditModal from '@/components/EditModal.vue';
 
 export default {
     name: 'TaskList',
     components: {
-        SearchForm
-    }
-}
+        SearchForm,
+        EditModal,
+    },
+    data() {
+        return {
+            tasks: [
+                { id: 1, name: 'Task 1', deadline: '2024-12-01', detail: 'Details for Task 1' },
+                { id: 2, name: 'Task 2', deadline: '2024-12-02', detail: 'Details for Task 2' },
+            ],
+            isModalOpen: false,
+            selectedTask: null,
+        };
+    },
+    methods: {
+        openEditModal(task) {
+            this.selectedTask = { ...task };
+            this.isModalOpen = true;
+        },
+        updateTask(updatedTask) {
+            console.log("Updating task:", updatedTask);
+            const index = this.tasks.findIndex(task => task.id === updatedTask.id);
+            if (index !== -1) {
+                // 配列の要素を直接更新
+                this.tasks[index] = updatedTask;
+            }
+            this.isModalOpen = false;
+        },
+        closeModal() {
+            this.isModalOpen = false;
+            this.selectedTask = null;
+        }
+    },
+};
 </script>
 
 
@@ -87,9 +115,8 @@ export default {
     color: black;
     background-color: lightsteelblue;
     width: 40px;
-    padding: 0 4px;
     border: none;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
     text-align: center;
 }

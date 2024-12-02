@@ -1,5 +1,5 @@
 <template>
-    <section class="modal__form" v-if="isOpen" :class="{ 'modal__form--active': isOpen }" >
+    <section class="modal__form" :class="{ 'modal__form--active': isOpen }" >
 
         <h2 class="page__title">EditTask</h2>
 
@@ -28,26 +28,44 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+    name:'EditModal',
     props: {
-        isOpen: Boolean,
-        tasks: Array,
+    task: {
+        type: Object,
+        required: true,
+        }
     },
+
     data() {
         return {
-            // taskのコピーをdataに格納
-            localTask: { ...this.task },
+            // 親コンポーネントから渡された task をコピーして localTask として管理
+            localTask: { ...this.task },// 深いコピーを使って、task の変更が親コンポーネントに影響しないように
         };
     },
     watch: {
         task(newTask) {
+            // 親から渡された新しいtaskをlocalTaskにコピー
             this.localTask = { ...newTask };
         }
     },
     methods: {
-        submitForm() {
-            this.$emit('update', this.localTask);
-            this.closeModal();
+        async submitForm() {
+            try {
+                // サーバーに更新リクエストを送る
+                const response = await axios.put(`http://localhost/api/tasks/${this.localTask.id}`, this.localTask);
+                console.log('更新成功:', response.data);
+
+                // 親コンポーネントに更新されたタスクを通知
+                this.$emit('update', response.data);
+
+                // モーダルを閉じる
+                this.closeModal();
+            } catch (error) {
+                console.error('更新エラー:', error);
+            }
         },
         closeModal() {
             this.$emit('close');

@@ -19,7 +19,7 @@
         </ul>
 
         <EditModal
-        :isOpen="isModalOpen"
+        v-if="isModalOpen"
         :task="selectedTask"
         @close="isModalOpen = false"
         @update="updateTask"
@@ -42,18 +42,35 @@ export default {
     data() {
         return {
             tasks: [
-                { id: 1, name: 'Task 1', deadline: '2024-12-01', detail: 'Details for Task 1' },
-                { id: 2, name: 'Task 2', deadline: '2024-12-02', detail: 'Details for Task 2' },
             ],
             isModalOpen: false,
             selectedTask: null,
         };
     },
+    mounted() {
+        this.fetchTasks();
+    },
     methods: {
+        async fetchTasks() {
+            try {
+                const response = await fetch('http://localhost/api/tasks');
+                const data = await response.json();
+                this.tasks = data;
+            } catch (error) {
+                console.error('タスク取得エラー:', error);
+            }
+        },
+        // 編集モーダルを開くーーーーー
         openEditModal(task) {
             this.selectedTask = { ...task };
             this.isModalOpen = true;
         },
+        // モーダルが閉じられたときに呼ばれるーーーーー
+        closeModal() {
+            this.isModalOpen = false;
+            this.selectedTask = null;
+        },
+        // タスクを更新ーーーーー
         updateTask(updatedTask) {
             console.log("Updating task:", updatedTask);
             const index = this.tasks.findIndex(task => task.id === updatedTask.id);
@@ -63,10 +80,6 @@ export default {
             }
             this.isModalOpen = false;
         },
-        closeModal() {
-            this.isModalOpen = false;
-            this.selectedTask = null;
-        }
     },
 };
 </script>

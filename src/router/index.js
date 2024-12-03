@@ -35,7 +35,7 @@ const routes = [
   },
   {
     path: '/task-list',
-    name: 'task-list',
+    name: 'TaskList',
     component: TaskList
   }
 ];

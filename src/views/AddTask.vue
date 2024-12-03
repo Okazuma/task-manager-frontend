@@ -4,21 +4,21 @@
 
         <h2 class="page__title">Add Task</h2>
 
-        <form>
+        <form @submit.prevent="addTask">
 
             <div class="form__group">
                 <label for="name" class="form__label">Task name</label>
-                <input type="text" id="name" name="name" class="form__input">
+                <input v-model="taskName" type="text" id="name" name="name" class="form__input" placeholder="Task name">
             </div>
 
             <div class="form__group">
                 <label for="detail" class="form__label">Task detail</label>
-                <textarea type="text" id="detail" name="detail" class="form__textarea"></textarea>
+                <textarea v-model="taskDetail" type="text" id="detail" name="detail" class="form__textarea" placeholder="Task detail"></textarea>
             </div>
 
             <div class="form__group">
                 <label for="deadline" class="form__label">Deadline</label>
-                <input type="date" id="deadline" name="deadline" class="form__input">
+                <input v-model="taskDeadline" type="date" id="deadline" name="deadline" class="form__input" placeholder="Task Deadline">
             </div>
 
             <button type="submit" class="form__button">Add</button>
@@ -30,6 +30,59 @@
 </template>
 
 <script>
+
+export default {
+    name: 'addTask',
+    data() {
+        return {
+            taskName: "",
+            taskDeadline: "",
+            taskDetail: "",
+        };
+    },
+    methods: {
+        async addTask() {
+            if (!this.taskName || !this.taskDeadline || !this.taskDetail) {
+                alert("Fill all forms");
+                return;
+            }
+
+            const taskData = {
+                name: this.taskName,
+                detail: this.taskDetail,
+                deadline: this.taskDeadline,
+            };
+
+
+            try {
+                const response = await fetch('http://localhost/api/tasks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(taskData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('タスクの追加に失敗しました');
+                }
+
+                const data = await response.json();
+                console.log('タスク追加成功:', data);
+                this.$router.push({ name: 'TaskList' });
+            } catch (error) {
+                console.error('エラー:', error);
+                alert('タスクの追加中にエラーが発生しました');
+            }
+        },
+
+        resetForm() {
+            this.taskName = "";
+            this.taskDetail = "";
+            this.taskDeadline = "";
+        },
+    },
+};
 
 </script>
 

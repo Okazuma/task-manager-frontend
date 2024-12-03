@@ -4,17 +4,22 @@
 
     <h2 class="page__title">Today</h2>
 
-    <div class="task__group">
+    <div v-if="todayTask.length === 0">
+      <p>No tasks for today.</p>
+    </div>
+
+    <div v-for="task in todayTask" :key="task.id" class="task__group">
+      <p>No Tasks For Today</p>
       <label class="task__label">Task name</label>
-      <span class="task__item">Test</span>
+      <span class="task__item">{{ task.name }}</span>
     </div>
-    <div class="task__group">
+    <div v-for="task in todayTask" :key="'deadline-' + task.id"   class="task__group">
       <label class="task__label">Deadline</label>
-      <span class="task__item">Test</span>
+      <span class="task__item">{{task.deadline}}</span>
     </div>
-    <div class="task__group">
+    <div v-for="task in todayTask" :key="'detail-' + task.id"   class="task__group">
       <label class="task__label">Task detail</label>
-      <span class="task__item">Test</span>
+      <span class="task__item">{{task.detail}}</span>
     </div>
 
     <nav class="task__actions">
@@ -27,6 +32,37 @@
 </template>
 
 <script>
+export default {
+  name: 'HomeView',
+  data() {
+    return {
+      tasks: [],
+    };
+  },
+  computed: {
+    todayTask() {
+      const today = new Date().toISOString().split('T')[0];
+      return this.tasks.filter(task => task.deadline && task.deadline === today);
+    },
+  },
+  methods: {
+    async fetchTasks() {
+      try {
+        const response = await fetch('http://localhost/api/tasks');
+        if (!response.ok) {
+          throw new Error('タスクの取得に失敗しました');
+        }
+        const data = await response.json();
+        this.tasks = data;
+      } catch (error) {
+        console.error('タスク取得エラー:', error);
+      }
+    },
+  },
+  mounted() {
+    this.fetchTasks();
+  },
+};
 
 </script>
 

@@ -13,7 +13,7 @@
                 </div>
                 <div class="task__actions">
                     <button type="button" class="task__button" @click="openEditModal(task)">Edit</button>
-                    <button type="button" class="task__button">Delete</button>
+                    <button @click="handleDelete(task.id)" type="button" class="task__button">Delete</button>
                 </div>
             </li>
         </ul>
@@ -51,6 +51,7 @@ export default {
         this.fetchTasks();
     },
     methods: {
+        // タスク表示の処理ーーーーー
         async fetchTasks() {
             try {
                 const response = await fetch('http://localhost/api/tasks');
@@ -80,6 +81,32 @@ export default {
             }
             this.isModalOpen = false;
         },
+        // タスク削除の処理ーーーーー
+        async handleDelete(taskId) {
+            const confirmDelete = confirm("本当に削除しますか？");
+            if (!confirmDelete) return; //何も行われずに関数が終了
+
+            try {
+                //APIに削除リクエストの送信
+                const response = await fetch(`http://localhost/api/tasks/${taskId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+                if(!response.ok){
+                    throw new Error("削除に失敗しました");
+                }
+
+                //成功したらローカルのタスクリストを更新
+                this.tasks = this.tasks.filter(task => task.id !== taskId);
+                alert("タスクを削除しました");
+            }catch (error) {
+                console.error(error);
+                alert("タスクの削除に失敗しました");
+            }
+        }
     },
 };
 </script>

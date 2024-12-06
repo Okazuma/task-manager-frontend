@@ -4,20 +4,20 @@
 
         <h2 class="page__title">Register</h2>
 
-        <form>
+        <form @submit.prevent="register">
             <div class="form__group">
                 <label for="name" class="form__label">Name</label>
-                <input type="text" id="name" name="name" class="form__input">
+                <input type="text" id="name" name="name" class="form__input" v-model="name">
             </div>
 
             <div class="form__group">
                 <label for="email" class="form__label">Email</label>
-                <input type="text" id="email" name="email" class="form__input">
+                <input type="text" id="email" name="email" class="form__input" v-model="email">
             </div>
 
             <div class="form__group">
                 <label for="password" class="form__label">Password</label>
-                <input type="password" id="password" name="password" class="form__input">
+                <input type="password" id="password" name="password" class="form__input" v-model="password">
             </div>
 
             <button type="submit" class="form__button">Register</button>
@@ -29,6 +29,39 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            name: '',
+            email: '',
+            password: '',
+            errorMessage: '',
+        };
+    },
+    methods: {
+        async register() {
+            try {
+                // CSRFトークンを取得
+                await axios.get('http://localhost/sanctum/csrf-cookie');
+                // ユーザー登録リクエスト
+                const response = await axios.post('http://localhost/api/register', {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                });
+                console.log('User registered successfully', response.data);
+                this.$router.push('/login');
+            } catch (error) {
+                this.errorMessage = 'ユーザー登録に失敗しました';
+                if (error.response && error.response.data.errors) {
+                    this.errorMessage = error.response.data.error - Object.keys(error.response.data.errors)[0][0];
+                }
+            }
+        },
+    },
+};
 
 </script>
 

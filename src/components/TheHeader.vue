@@ -3,8 +3,8 @@
         <h1>Task Manager</h1>
         <nav>
             <router-link to="/" class="nav__button">Home</router-link>
-            <router-link to="/user-register" class="nav__button">Register</router-link>
-            <router-link to="/user-login" class="nav__button">Login</router-link>
+            <router-link to="/register" class="nav__button">Register</router-link>
+            <router-link to="/login" class="nav__button">Login</router-link>
             <router-link to="/user-edit" class="nav__button">EditProfile</router-link>
         </nav>
     </header>

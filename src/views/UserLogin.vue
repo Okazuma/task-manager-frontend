@@ -4,20 +4,20 @@
 
         <h2 class="page__title">Login</h2>
 
-        <form>
+        <form @submit.prevent="login">
             <div class="form__group">
                 <label for="name" class="form__label">Name</label>
-                <input type="text" id="name" name="name" class="form__input">
+                <input type="text" id="name" name="name" class="form__input" v-model="name">
             </div>
 
             <div class="form__group">
                 <label for="email" class="form__label">Email</label>
-                <input type="text" id="email" name="email" class="form__input">
+                <input type="text" id="email" name="email" class="form__input" v-model="email">
             </div>
 
             <div class="form__group">
                 <label for="password" class="form__label">Password</label>
-                <input type="password" id="password" name="password" class="form__input">
+                <input type="password" id="password" name="password" class="form__input" v-model="password">
             </div>
 
             <button type="submit" class="form__button">Login</button>
@@ -29,6 +29,49 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            name:"",
+            email: "",
+            password: "",
+            errorMessage: "",
+        };
+    },
+    computed: {
+        user() {
+            const user = this.$store.state.user;
+            console.log('User from Vuex store:', user);  // ここでユーザー情報を確認
+            return user;
+        },
+    },
+    methods: {
+        async login() {
+            try {
+                await axios.get('http://localhost/sanctum/csrf-cookie');
+                const response = await axios.post('http://localhost/api/login', {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                });
+
+                localStorage.setItem('token', response.data.token); // トークンを保存
+                await this.$store.dispatch('fetchUser'); // ユーザー情報を取得
+                this.$router.push('/'); // ホームページにリダイレクト
+            } catch (error) {
+                console.error('Login error:', error);
+                this.errorMessage = 'ログインに失敗しました';
+            }
+        },
+    },
+    mounted() {
+        if (localStorage.getItem('token')) {
+            this.$store.dispatch('fetchUser');  // Vuex のアクションを呼び出し
+        }
+    },
+};
 
 </script>
 

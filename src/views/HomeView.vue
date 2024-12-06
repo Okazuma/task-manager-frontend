@@ -4,6 +4,9 @@
 
     <h2 class="page__title">Today</h2>
 
+    <p v-if="!user">Guest</p>
+    <p v-else>{{ user.name }}</p>
+
     <div v-if="todayTask.length === 0">
       <p>No tasks for today.</p>
     </div>
@@ -25,6 +28,9 @@
     <nav class="task__actions">
       <router-link to="/add-task" class="task__button">AddTask</router-link>
       <router-link to="/task-list" class="task__button">TaskList</router-link>
+
+      <button @click="logout">Logout</button>
+
     </nav>
 
   </section>
@@ -40,6 +46,9 @@ export default {
     };
   },
   computed: {
+    user() {
+      return this.$store.state.user;   // Vuexストアからユーザー情報を取得
+    },
     todayTask() {
       const today = new Date().toISOString().split('T')[0];
       return this.tasks.filter(task => task.deadline && task.deadline === today);
@@ -58,9 +67,16 @@ export default {
         console.error('タスク取得エラー:', error);
       }
     },
+    logout() {
+      localStorage.removeItem('token');
+      this.$store.commit('clearUser');
+      // ログインページにリダイレクト
+      this.$router.push('/login');
+    },
   },
   mounted() {
-    this.fetchTasks();
+    this.$store.dispatch('fetchUser'); // Vuex の fetchUser を呼び出し
+    this.fetchTasks(); // タスク取得のロジックはそのまま
   },
 };
 
@@ -79,6 +95,11 @@ export default {
   font-size: 24px;
   text-align: center;
   margin-bottom: 10px;
+}
+
+.user__name{
+  color:grey;
+  font-size: 16px;
 }
 
 .task__group {

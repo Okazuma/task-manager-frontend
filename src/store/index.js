@@ -3,13 +3,12 @@ import axios from 'axios';
 
 export default createStore({
   state: {
-    user: null,  // 初期値をnullに変更
+    user: null,
     tasks: [],
   },
   getters: {
-    getUser(state) {
-      return state.user;
-    },
+    user: (state) => state.user,
+    tasks: (state) => state.tasks,
   },
   mutations: {
     setUser(state, user) {

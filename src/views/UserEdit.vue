@@ -4,20 +4,20 @@
 
         <h2 class="page__title">EditProfile</h2>
 
-        <form class="form__content">
+        <form @submit.prevent="updateProfile" class="form__content">
             <div class="form__group">
                 <label for="name" class="form__label">Name</label>
-                <input type="text" id="name" name="name" class="form__input">
+                <input type="text" id="name" name="name" class="form__input" v-model="updateUser.name">
             </div>
 
             <div class="form__group">
                 <label for="email" class="form__label">Email</label>
-                <input type="text" id="email" name="email" class="form__input">
+                <input type="text" id="email" name="email" class="form__input" v-model="updateUser.email">
             </div>
 
             <div class="form__group">
                 <label for="password" class="form__label">Password</label>
-                <input type="password" id="password" name="password" class="form__input">
+                <input type="password" id="password" name="password" class="form__input" v-model="updateUser.password">
             </div>
 
             <button type="submit" class="form__button">Finish</button>
@@ -29,6 +29,63 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+export default {
+    computed: {
+        // Vuexのuser情報を取得
+        userFromStore() {
+        return this.$store.state.user|| {}; // userがnullの場合、空のオブジェクトを返す
+        },
+    },
+    data() {
+        return {
+            updateUser: {
+                name: '',
+                email: '',
+                password: '',
+            },
+        };
+    },
+    mounted() {
+        // updateUserFromStoreが存在する場合、updateUserにデータを設定
+        if (this.userFromStore) {
+        this.updateUser.name = this.userFromStore.name || '';
+        this.updateUser.email = this.userFromStore.email || '';
+        }else {
+        console.error('User information not available');
+        this.$router.push('/login'); // ユーザー情報がない場合、ログインページにリダイレクト
+        }
+        // 他の必要なロジックも追加できます
+    },
+    watch: {
+    // userFromStoreが更新されるたびにupdatedUserを更新
+        userFromStore(newUser) {
+        this.updateUser.name = newUser.name || '';
+        this.updateUser.email = newUser.email || '';
+        },
+    },
+    methods: {
+        async updateProfile() {
+            try {
+                // ユーザー情報を更新（APIに送信）
+                const formData = {
+                    name: this.updateUser.name,
+                    email: this.updateUser.email,
+                };
+                if (this.updateUser.password) {
+                    formData.password = this.updateUser.password;
+                }
+
+                await axios.put('http://localhost/api/user', formData);
+                alert('Profile updated successfully!');
+                this.$router.push('/');
+            } catch (error) {
+                console.error('Error updating profile:', error);
+            }
+        },
+    },
+};
 
 </script>
 

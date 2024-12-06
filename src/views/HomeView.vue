@@ -44,39 +44,38 @@ export default {
       return this.$store.state.user;   // Vuexストアからユーザー情報を取得
     },
     tasks() {
+      console.log(this.$store.state.tasks);  // デバッグ用
       return this.$store.state.tasks; // Vuexストアからタスク情報を取得
     },
     todayTask() {
-      const today = new Date().toISOString().split('T')[0];
+      const today =  new Date().toLocaleDateString('en-CA'); // ローカルタイムのyyyy-mm-ddフォーマット
+      console.log('Today:', today); // デバッグ用に本日の日付を表示
       return this.tasks.filter(task => task.deadline && task.deadline === today);
     },
   },
   methods: {
-    async fetchTasks() {
-      try {
-        const response = await fetch('http://localhost/api/tasks');
-        if (!response.ok) {
-          throw new Error('タスクの取得に失敗しました');
-        }
-        const data = await response.json();
-        this.tasks = data;
-      } catch (error) {
-        console.error('タスク取得エラー:', error);
-      }
-    },
     logout() {
       localStorage.removeItem('token');// ローカルストレージからトークンを削除
       this.$store.commit('clearUser');// Vuex のユーザー情報をクリア
       this.$store.commit('clearTasks');// Vuex のタスク情報をクリア
-      // ログインページにリダイレクト
       this.$router.push('/login');// ログインページにリダイレクト
     },
   },
   mounted() {
-    if (localStorage.getItem('token')) {
-      // トークンがある場合、Vuexのアクションを呼び出してユーザー情報とタスク情報を取得
-      this.$store.dispatch('fetchUser');
-      this.$store.dispatch('fetchTasks'); // タスクの取得も必要なら
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.$store.dispatch('fetchUser')// ユーザー情報を取得
+        .then(() => {
+          this.$store.dispatch('fetchTasks');// タスクも取得
+        })
+        .catch(error => {
+          console.error('Error fetching user:', error);
+          localStorage.removeItem('token');
+          this.$router.push('/login');
+        });
+    } else {
+      console.log('User not logged in.Redirecting to login page...');
+      this.$router.push('/login');
     }
   },
 };

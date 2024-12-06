@@ -99,7 +99,8 @@ export default {
                 }
 
                 //成功したらローカルのタスクリストを更新
-                this.tasks = this.tasks.filter(task => task.id !== taskId);
+                await this.$store.dispatch('fetchTasks'); // タスク一覧を再取得
+                this.$store.commit('setTasks', this.tasks); // Vuex ストアに更新を反映
                 alert("タスクを削除しました");
             }catch (error) {
                 console.error(error);

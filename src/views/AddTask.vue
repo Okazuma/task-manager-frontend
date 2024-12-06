@@ -40,6 +40,11 @@ export default {
             taskDetail: "",
         };
     },
+    computed: {
+        userId() {
+            return this.$store.state.user ? this.$store.state.user.id : null; // Vuexストアから取得
+        }
+    },
     methods: {
         async addTask() {
             if (!this.taskName || !this.taskDeadline || !this.taskDetail) {
@@ -47,10 +52,20 @@ export default {
                 return;
             }
 
+            if (!this.userId) {
+            alert("ユーザー情報が取得できませんでした。再ログインしてください。");
+            return;
+}
+
+            // Vuexから現在のユーザーIDを取得
+            // const userId = this.$store.state.user.id;
+
+
             const taskData = {
                 name: this.taskName,
                 detail: this.taskDetail,
                 deadline: this.taskDeadline,
+                user_id: this.userId,
             };
 
 
@@ -59,8 +74,10 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,  // 認証トークンをヘッダーに追加
                     },
                     body: JSON.stringify(taskData),
+                    credentials: 'include',  // クッキーを送信する設定
                 });
 
                 if (!response.ok) {
@@ -82,6 +99,12 @@ export default {
             this.taskDeadline = "";
         },
     },
+    mounted() {
+    if (localStorage.getItem('token')) {
+      // トークンがある場合、Vuexのアクションを呼び出してユーザー情報を取得
+      this.$store.dispatch('fetchUser');
+    }
+  },
 };
 
 </script>

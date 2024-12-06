@@ -52,14 +52,18 @@ export default {
             try {
                 await axios.get('http://localhost/sanctum/csrf-cookie');
                 const response = await axios.post('http://localhost/api/login', {
-                    name: this.name,
                     email: this.email,
                     password: this.password,
                 });
 
-                localStorage.setItem('token', response.data.token); // トークンを保存
-                await this.$store.dispatch('fetchUser'); // ユーザー情報を取得
-                this.$router.push('/'); // ホームページにリダイレクト
+                // トークンを保存
+                localStorage.setItem('token', response.data.token);
+
+                 // ユーザー情報を取得
+                await this.$store.dispatch('fetchUser');
+
+                 // ログイン後にホームにリダイレクト
+                this.$router.push('/');
             } catch (error) {
                 console.error('Login error:', error);
                 this.errorMessage = 'ログインに失敗しました';

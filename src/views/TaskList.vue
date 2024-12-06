@@ -41,26 +41,24 @@ export default {
     },
     data() {
         return {
-            tasks: [
-            ],
             isModalOpen: false,
             selectedTask: null,
         };
     },
+    computed: {
+        tasks() {
+            return this.$store.state.tasks; // Vuex の tasks を参照
+        }
+    },
     mounted() {
-        this.fetchTasks();
+    if (this.$store.state.user) {
+            this.$store.dispatch('fetchTasks'); // ユーザーがログインしている場合にタスク情報を取得
+        } else {
+            console.error('User is not authenticated.');
+            this.$router.push('/login');
+        }
     },
     methods: {
-        // タスク表示の処理ーーーーー
-        async fetchTasks() {
-            try {
-                const response = await fetch('http://localhost/api/tasks');
-                const data = await response.json();
-                this.tasks = data;
-            } catch (error) {
-                console.error('タスク取得エラー:', error);
-            }
-        },
         // 編集モーダルを開くーーーーー
         openEditModal(task) {
             this.selectedTask = { ...task };
@@ -92,6 +90,7 @@ export default {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`, // トークンを追加
                     },
                 });
 

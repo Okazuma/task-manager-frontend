@@ -12,7 +12,6 @@
     </div>
 
     <div v-for="task in todayTask" :key="task.id" class="task__group">
-      <p>No Tasks For Today</p>
       <label class="task__label">Task name</label>
       <span class="task__item">{{ task.name }}</span>
     </div>
@@ -40,14 +39,12 @@
 <script>
 export default {
   name: 'HomeView',
-  data() {
-    return {
-      tasks: [],
-    };
-  },
   computed: {
     user() {
       return this.$store.state.user;   // Vuexストアからユーザー情報を取得
+    },
+    tasks() {
+      return this.$store.state.tasks; // Vuexストアからタスク情報を取得
     },
     todayTask() {
       const today = new Date().toISOString().split('T')[0];
@@ -68,15 +65,19 @@ export default {
       }
     },
     logout() {
-      localStorage.removeItem('token');
-      this.$store.commit('clearUser');
+      localStorage.removeItem('token');// ローカルストレージからトークンを削除
+      this.$store.commit('clearUser');// Vuex のユーザー情報をクリア
+      this.$store.commit('clearTasks');// Vuex のタスク情報をクリア
       // ログインページにリダイレクト
-      this.$router.push('/login');
+      this.$router.push('/login');// ログインページにリダイレクト
     },
   },
   mounted() {
-    this.$store.dispatch('fetchUser'); // Vuex の fetchUser を呼び出し
-    this.fetchTasks(); // タスク取得のロジックはそのまま
+    if (localStorage.getItem('token')) {
+      // トークンがある場合、Vuexのアクションを呼び出してユーザー情報とタスク情報を取得
+      this.$store.dispatch('fetchUser');
+      this.$store.dispatch('fetchTasks'); // タスクの取得も必要なら
+    }
   },
 };
 

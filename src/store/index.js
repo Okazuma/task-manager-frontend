@@ -1,6 +1,8 @@
 import { createStore } from 'vuex'
 import axios from 'axios';
 
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
+
 export default createStore({
   state: {
     user: null,
@@ -12,14 +14,14 @@ export default createStore({
   },
   mutations: {
     setUser(state, user) {
-      console.log('Setting user:', user); //ユーザー情報を保存
+      console.log('Setting user:', user);
       state.user = user;
     },
     clearUser(state) {
       state.user = null;
     },
     setTasks(state, tasks) {
-      state.tasks = tasks; // タスク情報を保存
+      state.tasks = tasks;
     },
     clearTasks(state) {
       state.tasks = [];
@@ -30,17 +32,17 @@ export default createStore({
       try {
         const token = localStorage.getItem('token');
         if (!token) {
-          commit('clearUser'); // トークンがなければログアウト状態
+          commit('clearUser');
           return;
         }
 
-        const response = await axios.get('http://localhost/api/user', {
+        const response = await axios.get(`${API_BASE_URL}/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        commit('setUser', response.data); // ユーザー情報をVuexに保存
+        commit('setUser', response.data);
       } catch (error) {
         console.error('Error fetching user:', error);
-        commit('clearUser'); // エラーがあればユーザー情報をクリア
+        commit('clearUser');
       }
     },
     async fetchTasks({ commit }) {
@@ -50,17 +52,17 @@ export default createStore({
           throw new Error('No token found');
         }
 
-        const response = await axios.get('http://localhost/api/tasks', {
+        const response = await axios.get(`${API_BASE_URL}/tasks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        commit('setTasks', response.data); // タスク情報をVuexに保存
+        commit('setTasks', response.data);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
     },
     logout({ commit }) {
-      localStorage.removeItem('token');  // トークンを削除
-      commit('clearUser');  // ユーザー情報をクリア
+      localStorage.removeItem('token');
+      commit('clearUser');
     },
   },
   modules: {},

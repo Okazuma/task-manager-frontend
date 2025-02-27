@@ -1,7 +1,5 @@
 <template>
-
     <section class="add__form">
-
         <h2 class="page__title">Add Task</h2>
 
         <form @submit.prevent="addTask">
@@ -24,12 +22,12 @@
             <button type="submit" class="form__button">Add</button>
 
         </form>
-
     </section>
-
 </template>
 
+
 <script>
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
 
 export default {
     name: 'addTask',
@@ -42,7 +40,7 @@ export default {
     },
     computed: {
         userId() {
-            return this.$store.state.user ? this.$store.state.user.id : null; // Vuexストアから取得
+            return this.$store.state.user ? this.$store.state.user.id : null;
         }
     },
     methods: {
@@ -57,10 +55,6 @@ export default {
             return;
 }
 
-            // Vuexから現在のユーザーIDを取得
-            // const userId = this.$store.state.user.id;
-
-
             const taskData = {
                 name: this.taskName,
                 detail: this.taskDetail,
@@ -68,16 +62,15 @@ export default {
                 user_id: this.userId,
             };
 
-
             try {
-                const response = await fetch('http://localhost/api/tasks', {
+                const response = await fetch(`${API_BASE_URL}/tasks`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,  // 認証トークンをヘッダーに追加
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     },
                     body: JSON.stringify(taskData),
-                    credentials: 'include',  // クッキーを送信する設定
+                    credentials: 'include',
                 });
 
                 if (!response.ok) {
@@ -101,16 +94,14 @@ export default {
     },
     mounted() {
     if (localStorage.getItem('token')) {
-      // トークンがある場合、Vuexのアクションを呼び出してユーザー情報を取得
-      this.$store.dispatch('fetchUser');
+        this.$store.dispatch('fetchUser');
     }
   },
 };
-
 </script>
 
-<style scoped>
 
+<style scoped>
 .add__form {
     width: 90%;
     height: auto;
@@ -179,5 +170,4 @@ export default {
 
 @media (min-width: 768px) {
 }
-
 </style>

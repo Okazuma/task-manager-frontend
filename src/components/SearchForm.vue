@@ -1,11 +1,10 @@
 <template>
-
     <div class="search-form">
-        <input type="text" v-model="searchQuery" class="search-form__input" placeholder="Search tasks..." />
+        <input type="text" v-model="searchQuery" class="search-form__input" placeholder="Search tasks..." @input="updateSearchQuery"/>
         <button @click="searchTasks" class="search-form__button">Search</button>
     </div>
-
 </template>
+
 
 <script>
 export default {
@@ -16,15 +15,15 @@ export default {
         }
     },
     methods: {
-        searchTasks() {
-            console.log('Searching for:', this.searchQuery);
+        updateSearchQuery() {
+            this.$emit('update-search', this.searchQuery);
         }
     }
 }
 </script>
 
-<style scoped>
 
+<style scoped>
 .search-form {
     display: flex;
     justify-content: center;
@@ -71,5 +70,4 @@ export default {
 
 @media (min-width: 768px) {
 }
-
 </style>

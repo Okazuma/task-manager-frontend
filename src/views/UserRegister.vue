@@ -23,13 +23,14 @@
             <button type="submit" class="form__button">Register</button>
 
         </form>
-
     </section>
-
 </template>
+
 
 <script>
 import axios from 'axios';
+
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
 
 export default {
     data() {
@@ -43,10 +44,8 @@ export default {
     methods: {
         async register() {
             try {
-                // CSRFトークンを取得
                 await axios.get('http://localhost/sanctum/csrf-cookie');
-                // ユーザー登録リクエスト
-                const response = await axios.post('http://localhost/api/register', {
+                const response = await axios.post(`${API_BASE_URL}/register`, {
                     name: this.name,
                     email: this.email,
                     password: this.password,
@@ -67,7 +66,6 @@ export default {
 
 
 <style scoped>
-
 .register__form {
     width: 90%;
     height: auto;
@@ -127,5 +125,4 @@ export default {
 
 @media (min-width: 768px) {
 }
-
 </style>

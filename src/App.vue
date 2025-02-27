@@ -15,10 +15,9 @@ export default {
 }
 </script>
 
-<style>
 
+<style>
 button {
   all: unset;
 }
-
 </style>

@@ -1,11 +1,8 @@
 <template>
-
   <section class="home__section">
-
     <h2 class="page__title">Today</h2>
 
-    <p v-if="!user">Guest</p>
-    <p v-else>{{ user.name }}</p>
+    <p>{{user ?. name ?? "Guest"}}</p>
 
     <div v-if="todayTask.length === 0">
       <p>No tasks for today.</p>
@@ -27,46 +24,44 @@
     <nav class="task__actions">
       <router-link to="/add-task" class="task__button">AddTask</router-link>
       <router-link to="/task-list" class="task__button">TaskList</router-link>
-
-      <button @click="logout">Logout</button>
-
+      <button @click="logout" class="task__button">Logout</button>
     </nav>
 
   </section>
-
 </template>
+
 
 <script>
 export default {
   name: 'HomeView',
   computed: {
     user() {
-      return this.$store.state.user;   // Vuexストアからユーザー情報を取得
+      return this.$store.state.user;
     },
     tasks() {
-      console.log(this.$store.state.tasks);  // デバッグ用
-      return this.$store.state.tasks; // Vuexストアからタスク情報を取得
+      console.log(this.$store.state.tasks);
+      return this.$store.state.tasks;
     },
     todayTask() {
-      const today =  new Date().toLocaleDateString('en-CA'); // ローカルタイムのyyyy-mm-ddフォーマット
-      console.log('Today:', today); // デバッグ用に本日の日付を表示
+      const today =  new Date().toLocaleDateString('en-CA');
+      console.log('Today:', today);
       return this.tasks.filter(task => task.deadline && task.deadline === today);
     },
   },
   methods: {
     logout() {
-      localStorage.removeItem('token');// ローカルストレージからトークンを削除
-      this.$store.commit('clearUser');// Vuex のユーザー情報をクリア
-      this.$store.commit('clearTasks');// Vuex のタスク情報をクリア
-      this.$router.push('/login');// ログインページにリダイレクト
+      localStorage.removeItem('token');
+      this.$store.commit('clearUser');
+      this.$store.commit('clearTasks');
+      this.$router.push('/login');
     },
   },
   mounted() {
     const token = localStorage.getItem('token');
     if (token) {
-      this.$store.dispatch('fetchUser')// ユーザー情報を取得
+      this.$store.dispatch('fetchUser')
         .then(() => {
-          this.$store.dispatch('fetchTasks');// タスクも取得
+          this.$store.dispatch('fetchTasks');
         })
         .catch(error => {
           console.error('Error fetching user:', error);
@@ -79,12 +74,10 @@ export default {
     }
   },
 };
-
 </script>
 
 
 <style scoped>
-
 .home__section {
   width: 90%;
   height: auto;
@@ -151,5 +144,4 @@ export default {
 
 @media (min-width: 768px) {
 }
-
 </style>

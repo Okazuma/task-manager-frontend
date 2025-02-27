@@ -1,7 +1,5 @@
 <template>
-
     <section class="login__form">
-
         <h2 class="page__title">Login</h2>
 
         <form @submit.prevent="login">
@@ -23,13 +21,14 @@
             <button type="submit" class="form__button">Login</button>
 
         </form>
-
     </section>
-
 </template>
+
 
 <script>
 import axios from 'axios';
+
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
 
 export default {
     data() {
@@ -43,7 +42,7 @@ export default {
     computed: {
         user() {
             const user = this.$store.state.user;
-            console.log('User from Vuex store:', user);  // ここでユーザー情報を確認
+            console.log('User from Vuex store:', user);
             return user;
         },
     },
@@ -51,18 +50,15 @@ export default {
         async login() {
             try {
                 await axios.get('http://localhost/sanctum/csrf-cookie');
-                const response = await axios.post('http://localhost/api/login', {
+                const response = await axios.post(`${API_BASE_URL}/login`, {
                     email: this.email,
                     password: this.password,
                 });
 
-                // トークンを保存
                 localStorage.setItem('token', response.data.token);
 
-                 // ユーザー情報を取得
                 await this.$store.dispatch('fetchUser');
 
-                 // ログイン後にホームにリダイレクト
                 this.$router.push('/');
             } catch (error) {
                 console.error('Login error:', error);
@@ -72,11 +68,10 @@ export default {
     },
     mounted() {
         if (localStorage.getItem('token')) {
-            this.$store.dispatch('fetchUser');  // Vuex のアクションを呼び出し
+            this.$store.dispatch('fetchUser');
         }
     },
 };
-
 </script>
 
 
@@ -139,5 +134,4 @@ export default {
 
 @media (min-width: 768px) {
 }
-
 </style>

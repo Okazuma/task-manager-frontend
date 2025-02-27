@@ -1,7 +1,5 @@
 <template>
-
     <section class="edit__form">
-
         <h2 class="page__title">EditProfile</h2>
 
         <form @submit.prevent="updateProfile" class="form__content">
@@ -23,19 +21,19 @@
             <button type="submit" class="form__button">Finish</button>
 
         </form>
-
     </section>
-
 </template>
+
 
 <script>
 import axios from 'axios'
 
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
+
 export default {
     computed: {
-        // Vuexのuser情報を取得
         userFromStore() {
-        return this.$store.state.user|| {}; // userがnullの場合、空のオブジェクトを返す
+        return this.$store.state.user|| {};
         },
     },
     data() {
@@ -48,18 +46,15 @@ export default {
         };
     },
     mounted() {
-        // updateUserFromStoreが存在する場合、updateUserにデータを設定
         if (this.userFromStore) {
         this.updateUser.name = this.userFromStore.name || '';
         this.updateUser.email = this.userFromStore.email || '';
         }else {
         console.error('User information not available');
-        this.$router.push('/login'); // ユーザー情報がない場合、ログインページにリダイレクト
+        this.$router.push('/login');
         }
-        // 他の必要なロジックも追加できます
     },
     watch: {
-    // userFromStoreが更新されるたびにupdatedUserを更新
         userFromStore(newUser) {
         this.updateUser.name = newUser.name || '';
         this.updateUser.email = newUser.email || '';
@@ -68,7 +63,6 @@ export default {
     methods: {
         async updateProfile() {
             try {
-                // ユーザー情報を更新（APIに送信）
                 const formData = {
                     name: this.updateUser.name,
                     email: this.updateUser.email,
@@ -77,7 +71,7 @@ export default {
                     formData.password = this.updateUser.password;
                 }
 
-                await axios.put('http://localhost/api/user', formData);
+                await axios.put(`${API_BASE_URL}/user`, formData);
                 alert('Profile updated successfully!');
                 this.$router.push('/');
             } catch (error) {
@@ -86,8 +80,8 @@ export default {
         },
     },
 };
-
 </script>
+
 
 <style scoped>
 .edit__form {
@@ -148,5 +142,4 @@ export default {
 
 @media (min-width: 768px) {
 }
-
 </style>

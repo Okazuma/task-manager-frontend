@@ -1,13 +1,11 @@
 <template>
-
     <section class="task__section">
-
         <h2 class="page__title">TaskList</h2>
 
-        <SearchForm />
+        <SearchForm  @update-search="setSearchQuery"/>
 
         <ul class="task__list">
-            <li class="task__item" v-for="task in tasks" :key="task.id">
+            <li class="task__item" v-for="task in filteredTasks" :key="task.id">
                 <div class="task__content">
                     <span class="task__name">{{ task.name }}</span>
                 </div>
@@ -24,14 +22,15 @@
         @close="isModalOpen = false"
         @update="updateTask"
         />
-
     </section>
-
 </template>
+
 
 <script>
 import SearchForm from '@/components/SearchForm.vue';
 import EditModal from '@/components/EditModal.vue';
+
+const API_BASE_URL = process.env.VUE_APP_API_BASE_URL;
 
 export default {
     name: 'TaskList',
@@ -43,16 +42,23 @@ export default {
         return {
             isModalOpen: false,
             selectedTask: null,
+            searchQuery: '',
         };
     },
     computed: {
         tasks() {
-            return this.$store.state.tasks; // Vuex の tasks を参照
+            return this.$store.state.tasks;
+        },
+        filteredTasks() {
+            if (!this.searchQuery) return this.tasks;
+            return this.tasks.filter(task =>
+                task.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+            );
         }
     },
     mounted() {
     if (this.$store.state.user) {
-            this.$store.dispatch('fetchTasks'); // ユーザーがログインしている場合にタスク情報を取得
+            this.$store.dispatch('fetchTasks');
         } else {
             console.error('User is not authenticated.');
             this.$router.push('/login');
@@ -69,12 +75,15 @@ export default {
             this.isModalOpen = false;
             this.selectedTask = null;
         },
+        // タスクの検索
+        setSearchQuery(query) {
+            this.searchQuery = query;
+        },
         // タスクを更新ーーーーー
         updateTask(updatedTask) {
             console.log("Updating task:", updatedTask);
             const index = this.tasks.findIndex(task => task.id === updatedTask.id);
             if (index !== -1) {
-                // 配列の要素を直接更新
                 this.tasks[index] = updatedTask;
             }
             this.isModalOpen = false;
@@ -82,15 +91,14 @@ export default {
         // タスク削除の処理ーーーーー
         async handleDelete(taskId) {
             const confirmDelete = confirm("本当に削除しますか？");
-            if (!confirmDelete) return; //何も行われずに関数が終了
+            if (!confirmDelete) return;
 
             try {
-                //APIに削除リクエストの送信
-                const response = await fetch(`http://localhost/api/tasks/${taskId}`, {
+                const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`, // トークンを追加
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`,
                     },
                 });
 
@@ -98,9 +106,8 @@ export default {
                     throw new Error("削除に失敗しました");
                 }
 
-                //成功したらローカルのタスクリストを更新
-                await this.$store.dispatch('fetchTasks'); // タスク一覧を再取得
-                this.$store.commit('setTasks', this.tasks); // Vuex ストアに更新を反映
+                await this.$store.dispatch('fetchTasks');
+                this.$store.commit('setTasks', this.tasks);
                 alert("タスクを削除しました");
             }catch (error) {
                 console.error(error);
@@ -113,7 +120,6 @@ export default {
 
 
 <style scoped>
-
 .task__section{
     width: 90%;
     height: auto;
@@ -172,5 +178,4 @@ export default {
 
 @media (min-width: 768px) {
 }
-
 </style>

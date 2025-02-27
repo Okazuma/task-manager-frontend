@@ -16,4 +16,10 @@ export default [
   js.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   skipFormatting,
+
+  {
+    rules: {
+      // 'no-console': 'error', // コメントアウトを外せば console.log を禁止
+    },
+  },
 ]

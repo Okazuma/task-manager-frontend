@@ -13,3 +13,10 @@
 
 <script setup>
 </script>
+
+
+<style scoped>
+.router-link-active{
+    color:orange;
+}
+</style>

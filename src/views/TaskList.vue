@@ -37,9 +37,9 @@ const removeTask = (taskId)=>{
     if(!taskId){
         return;
     }
+    console.log(`🔥削除するtask:${taskId}`);
     if(confirm(`タスク:${taskId}を削除しますか？`)){
         taskStore.deleteTask(taskId);
-        console.log(`🔥削除したtask:${taskId}`);
     }
 }
 

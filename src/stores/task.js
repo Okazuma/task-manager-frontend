@@ -21,6 +21,7 @@ export const useTaskStore = defineStore('task', () => {
 
     const deleteTask = (taskId) => {
         tasks.value = tasks.value.filter(task => task.id !== taskId)
+        console.log(`🔥削除したtask:${JSON.stringify(taskId, null , 2)}`);
     };
 
     const openModal = (task) => {

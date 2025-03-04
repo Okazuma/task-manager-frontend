@@ -36,7 +36,7 @@ const resetForm = () => {
 
 
 
-const handleRegister = () => {
+const handleRegister = async() => {
     if(!userForm.value.name || !userForm.value.email || !userForm.value.password){
         alert('全ての項目を入力してください');
         return;
@@ -44,17 +44,22 @@ const handleRegister = () => {
 
     console.log(`🔥登録するユーザー:${JSON.stringify(userForm.value, null , 2)}`);
 
-    userStore.registerUser({
-    name: userForm.value.name,
-    email: userForm.value.email,
-    password: userForm.value.password,
-    });
+    try{
+        await userStore.registerUser({
+        name: userForm.value.name,
+        email: userForm.value.email,
+        password: userForm.value.password,
+        });
 
-    alert("登録が完了しました！");
+        alert("登録が完了しました！");
 
-    console.log(`🔥登録したユーザー:${JSON.stringify(userStore.user.value, null, 2)}`);
+        console.log(`🔥登録したユーザー:${JSON.stringify(userForm.value, null, 2)}`);
 
-    router.push('/login');
-    resetForm();
+        router.push('/login');
+        resetForm();
+    }catch(error){
+        console.error('❌handleRegister:ユーザー登録失敗:',error)
+        alert('登録に失敗しました😢');
+    }
 };
 </script>

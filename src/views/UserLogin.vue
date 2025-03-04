@@ -36,28 +36,33 @@ const resetForm = () => {
 
 
 
-const handleLogin = () => {
+const handleLogin = async () => {
     if(!userForm.value.name || !userForm.value.email || !userForm.value.password){
         alert('全項目を入力してください');
         return ;
     };
 
     console.log(`🔥ログインするユーザー:${JSON.stringify(userForm.value, null, 2)}`);
+    try{
+        await userStore.loginUser({
+        name: userForm.value.name,
+        email: userForm.value.email,
+        password: userForm.value.password,
+        });
 
-    userStore.loginUser({
-    name: userForm.value.name,
-    email: userForm.value.email,
-    password: userForm.value.password,
-    });
+        alert("ログインが完了しました！");
 
-    alert("ログインが完了しました！");
+        console.log(`🔥ログインしたユーザー:${JSON.stringify(userForm.value, null, 2)}`);
+        console.log(`🔥ログインしたユーザーの認証状態:${userStore.isAuthenticated}`);
+        console.log("🔥 現在のクッキー: ", document.cookie);
 
-    console.log(`🔥ログインしたユーザー:${JSON.stringify(userForm.value, null, 2)}`);
-    console.log(`🔥ログインしたユーザーの認証状態:${userStore.isAuthenticated}`);
-
-    if(userStore.isAuthenticated){
-        router.push("/");
-    };
-    resetForm();
+        if(userStore.isAuthenticated){
+            router.push("/");
+        };
+        resetForm();
+    }catch (error){
+        console.error('❌handleLogin:ログイン失敗',error);
+        alert('ログインに失敗しました');
+    }
 };
 </script>

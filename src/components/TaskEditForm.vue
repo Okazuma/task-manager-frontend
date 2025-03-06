@@ -1,5 +1,6 @@
 <template>
     <form @submit.prevent="taskStore.updateTask">
+        <h1 class="text-center text-xl mb-2">Task Edit</h1>
         <input type="text" v-model="taskStore.editingTask.name" class="block mx-auto border-2 border-gray-300 rounded outline-none my-2 px-2">
 
         <textarea v-model="taskStore.editingTask.detail" class="block mx-auto rounded w-72 h-40  border-2 border-gray-300 my-2 p-2 outline-none sm:w-[400px] md:w-[500px] lg:w-[700px] sm:h-40 md:h-48 lg:h-56">

@@ -29,7 +29,6 @@ const userForm = ref({
 });
 
 
-
 const resetForm = () => {
     userForm.value = { name: '', email: '', password: ''};
 }
@@ -51,9 +50,6 @@ const handleLogin = async () => {
         });
 
         alert("ログインが完了しました！");
-
-        console.log(`🔥ログインしたユーザー:${JSON.stringify(userForm.value, null, 2)}`);
-        console.log(`🔥ログインしたユーザーの認証状態:${userStore.isAuthenticated}`);
         console.log("🔥 現在のクッキー: ", document.cookie);
 
         if(userStore.isAuthenticated){

@@ -54,7 +54,7 @@ const handleLogin = async () => {
 
         if(userStore.isAuthenticated){
             router.push("/");
-        };
+        }
         resetForm();
     }catch (error){
         console.error('❌handleLogin:ログイン失敗',error);

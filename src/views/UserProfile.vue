@@ -36,9 +36,9 @@ const editUser = (user) => {
     if(!user){
         return;
     }
-    console.log('🔥モーダルに渡す編集するUser:',user)
+    console.log('🔥モーダルに渡す編集するUser:',user);
     userStore.openModal(user);
-}
+};
 
 
 
@@ -55,11 +55,13 @@ const removeUser = async (userId) => {
     }else{
         console.log('🔥removeUser:ユーザー削除のキャンセル');
     }
-}
+};
 
 
 
 onMounted(() => {
-    userStore.fetchUser();
+    if(!userStore.user.id){
+        userStore.fetchUser();
+    }
 });
 </script>

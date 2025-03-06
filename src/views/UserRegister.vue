@@ -32,7 +32,7 @@ const userForm = ref({
 
 const resetForm = () => {
     userForm.value = { name: '', email: '', password: ''};
-}
+};
 
 
 
@@ -40,7 +40,7 @@ const handleRegister = async() => {
     if(!userForm.value.name || !userForm.value.email || !userForm.value.password){
         alert('全ての項目を入力してください');
         return;
-    };
+    }
 
     console.log(`🔥登録するユーザー:${JSON.stringify(userForm.value, null , 2)}`);
 

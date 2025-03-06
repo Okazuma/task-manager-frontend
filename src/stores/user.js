@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia"
 import { ref } from "vue"
-import api from "@/api";
+import api from "../api";
 
 
 export const useUserStore = defineStore('user', () => {
@@ -22,7 +22,6 @@ export const useUserStore = defineStore('user', () => {
 
 
     const fetchUser = async () => {
-        if (!user.value.id) {
             try {
                 const response = await api.get('/user');
                 console.log('📌取得したユーザーデータ:', response.data);
@@ -32,7 +31,6 @@ export const useUserStore = defineStore('user', () => {
                 console.error('❌fetchUser:ユーザー情報取得失敗', error);
                 setUser({ id: null, name: '', email: '', password: '' });
             }
-        }
     };
 
 
@@ -68,7 +66,7 @@ export const useUserStore = defineStore('user', () => {
         isAuthenticated.value = false;
         console.log('🔥ログアウトしたユーザー:', user.value);
         console.log(`🔥ログアウトしたユーザーの認証状態:${isAuthenticated.value}`);
-    }
+    };
 
 
 
@@ -110,7 +108,7 @@ export const useUserStore = defineStore('user', () => {
             password: '',
         };
         isOpen.value = false;
-    }
+    };
 
 
 
@@ -133,12 +131,12 @@ export const useUserStore = defineStore('user', () => {
         const newUser = {
             name: editingUser.value.name,
             email: editingUser.value.email,
-        }
+        };
         if (isPasswordChange.value && editingUser.value.password) {
             newUser.password = editingUser.value.password;
         }
         try {
-            const response = await api.put(`/user/${user.id}`,newUser)
+            const response = await api.put(`/user/${user.id}`, newUser)
             console.log('📌 サーバーからのレスポンス:', response?.data);
             setUser({
                 id: user.id,
@@ -153,7 +151,7 @@ export const useUserStore = defineStore('user', () => {
             console.error('❌updateProfile:プロフィール更新失敗', error);
             alert('プロフィール更新に失敗しました。');
         }
-    }
+    };
 
 
 
@@ -174,7 +172,7 @@ export const useUserStore = defineStore('user', () => {
             console.error('❌deleteUser:ユーザー削除の失敗:', error);
             alert('❌ユーザー削除に失敗しました');
         }
-    }
+    };
 
 
     return {

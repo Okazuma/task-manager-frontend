@@ -15,22 +15,24 @@
             </li>
         </ul>
         <p v-else>タスクがありません</p>
-        <EditModal v-if="taskStore.isOpen">
-            <TaskEditForm />
-        </EditModal>
+            <EditModal v-if="taskStore.isOpen">
+                <TaskEditForm />
+            </EditModal>
         <router-link to="/" class="w-fit min-w-[72px] bg-gray-600 text-white px-4 mx-auto block text-center rounded">戻る</router-link>
     </section>
 </template>
 
 
 <script setup>
+import { useUserStore } from "../stores/user";
 import { useTaskStore } from "../stores/task";
 import EditModal from '../components/EditModal.vue';
 import TaskEditForm from "../components/TaskEditForm.vue";
+import { onMounted } from "vue";
 
 
+const userStore = useUserStore();
 const taskStore = useTaskStore();
-
 
 
 const removeTask = (taskId)=>{
@@ -41,7 +43,9 @@ const removeTask = (taskId)=>{
     if(confirm(`タスク:${taskId}を削除しますか？`)){
         taskStore.deleteTask(taskId);
     }
-}
+};
+
+
 
 const editTask = (task) => {
     if(!task){
@@ -49,5 +53,16 @@ const editTask = (task) => {
     }
     console.log(`🔥モーダルに渡す編集するtask:${JSON.stringify(task, null, 2)}`)
     taskStore.openModal(task);
-}
+};
+
+
+
+onMounted(() => {
+    if(!userStore.user.id){
+        userStore.fetchUser();
+    }
+    if(taskStore.tasks.length === 0){
+        taskStore.fetchTasks();
+    }
+});
 </script>

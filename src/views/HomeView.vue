@@ -36,6 +36,8 @@ const handleLogout = () => {
 
 
 onMounted(() => {
+  if(!userStore.user.id){
     userStore.fetchUser();
+  }
 });
 </script>

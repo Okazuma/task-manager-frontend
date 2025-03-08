@@ -14,7 +14,6 @@
                 <label for="taskDeadline" class="block text-center">Deadline</label>
                 <input type="date" id="taskDeadline" v-model="taskContent.taskDeadline" class="block mx-auto">
             </div>
-
             <div class="flex">
                 <button type="submit" class="w-fit min-w-[72px] bg-gray-600 text-white px-4 mx-auto block text-center rounded">作成</button>
                 <router-link to="/" class="w-fit min-w-[72px] bg-gray-600 text-white text-sm  px-4 mx-auto block text-center rounded">戻る</router-link>

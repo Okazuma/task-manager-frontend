@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { useUserStore } from "../stores/user";
 import { ref } from "vue";
 import  api  from "../api";
 
@@ -12,6 +13,7 @@ export const useTaskStore = defineStore('task', () => {
         detail: '',
         deadline: '',
     });
+    const userStore = useUserStore();
 
 
     const fetchTasks = async () => {
@@ -59,9 +61,18 @@ export const useTaskStore = defineStore('task', () => {
 
 
 
-    const deleteTask = (taskId) => {
-        tasks.value = tasks.value.filter(task => task.id !== taskId);
-        console.log(`🔥削除したtask:${JSON.stringify(taskId, null , 2)}`);
+    const deleteTask = async (taskId) => {
+        try {
+            const response = await api.delete(`/tasks/${taskId}`)
+            console.log('📌タスク削除のサーバーレスポンス:', response.data);
+            tasks.value = tasks.value.filter(task => task.id !== taskId);
+            // console.log(`🔥削除して更新されたtasks:${JSON.stringify(tasks, null, 2)}`);
+            console.log('🔥削除して更新されたtasks:',tasks);
+
+        } catch (error) {
+            console.error('❌deleteTask:タスク削除の失敗', error);
+            alert('タスクの削除に失敗しました');
+        }
     };
 
 
@@ -83,13 +94,26 @@ export const useTaskStore = defineStore('task', () => {
 
 
 
-    const updateTask = () => {
+    const updateTask = async () => {
         if (!editingTask.value.id) {
             return;
         }
-        tasks.value = tasks.value.map(task => task.id === editingTask.value.id ? { ...editingTask.value } : task);
-        console.log(`🔥編集して更新されたtasks:${JSON.stringify(tasks.value, null, 2)}`);
-        closeModal();
+        try {
+            const response = await api.put(`/tasks/${editingTask.value.id}`, {
+                name: editingTask.value.name,
+                detail: editingTask.value.detail,
+                deadline: editingTask.value.deadline,
+                user_id: userStore.user.id,
+            });
+            console.log('📌updateTask:サーバーレスポンス:',response.data);
+            tasks.value = tasks.value.map(task => task.id === editingTask.value.id ? { ...response.data } : task);
+            console.log(`🔥編集して更新されたtasks:${JSON.stringify(tasks.value, null, 2)}`);
+            alert('タスクが更新されました');
+            closeModal();
+        } catch (error) {
+            console.error('❌updateTask:タスク更新の失敗', error);
+            alert('タスクの更新に失敗しました');
+        }
     };
 
 

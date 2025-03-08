@@ -10,9 +10,7 @@
             <span class="block text-center px-2">{{userStore?.user?.email ||  'Not logged or undefined'}}</span>
 
             <div class="flex gap-2 px-2 py-6">
-                <!-- <button @click="editUser(userStore.user)" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Edit</button> -->
                 <button @click="editUser()" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Edit</button>
-                <!-- <button @click="removeUser(userStore.user.id)" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Delete</button> -->
                 <button @click="removeUser()" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Delete</button>
                 <router-link to="/" class="w-fit min-w-[72px] bg-gray-600 text-white text-sm   mx-auto block text-center rounded">戻る</router-link>
             </div>

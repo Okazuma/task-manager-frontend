@@ -28,7 +28,7 @@ import { useUserStore } from "../stores/user";
 import { useTaskStore } from "../stores/task";
 import EditModal from '../components/EditModal.vue';
 import TaskEditForm from "../components/TaskEditForm.vue";
-import { onMounted } from "vue";
+import { onMounted , watch } from "vue";
 
 
 const userStore = useUserStore();
@@ -64,5 +64,13 @@ onMounted(() => {
     if(taskStore.tasks.length === 0){
         taskStore.fetchTasks();
     }
+});
+
+
+watch(() => userStore.user.id, async (newUserId ,oldUserId) => {
+    if ( newUserId && newUserId !== oldUserId ){
+        await taskStore.fetchTasks();
+    }
+
 });
 </script>

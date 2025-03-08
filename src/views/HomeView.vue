@@ -15,11 +15,13 @@
 
 <script setup>
 import { useUserStore } from "../stores/user";
+import { useTaskStore } from "../stores/task";
 import { useRouter } from "vue-router";
-import { onMounted } from "vue";
+import { onMounted , watch } from "vue";
 
 
 const userStore = useUserStore();
+const taskStore = useTaskStore();
 const router = useRouter();
 
 
@@ -39,5 +41,12 @@ onMounted(() => {
   if(!userStore.user.id){
     userStore.fetchUser();
   }
+});
+
+watch(() => userStore.user.id, async (newUserId ,oldUserId) => {
+    if ( newUserId && newUserId !== oldUserId ){
+        await taskStore.fetchTasks();
+    }
+
 });
 </script>

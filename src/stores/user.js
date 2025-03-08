@@ -91,10 +91,14 @@ export const useUserStore = defineStore('user', () => {
 
 
 
-    const openModal = (user) => {
-        console.log('🔥モーダルが受け取ったuser:',user);
-        if (!user) return;
-        editingUser.value = { ...user };
+    const openModal = () => {
+        console.log(`🔥モーダルが受け取ったuser:${JSON.stringify(user.value, null, 2)}`);
+        if (!user.value) return;
+        editingUser.value = {
+            name: user.value.name,
+            email: user.value.email,
+            password: user.value.password,
+        };
         isOpen.value = true;
     };
 
@@ -125,8 +129,8 @@ export const useUserStore = defineStore('user', () => {
 
 
 
-    const updateUser = async (user) => {
-        console.log(`🔥モーダルが受け取ったUser:${JSON.stringify(user, null, 2)}`);
+    const updateUser = async () => {
+        console.log(`🔥モーダルが表示するUser:${JSON.stringify(user.value, null, 2)}`);
 
         const newUser = {
             name: editingUser.value.name,
@@ -136,17 +140,18 @@ export const useUserStore = defineStore('user', () => {
             newUser.password = editingUser.value.password;
         }
         try {
-            const response = await api.put(`/user/${user.id}`, newUser)
+            const response = await api.put('/user', newUser)
+
             console.log('📌 サーバーからのレスポンス:', response?.data);
             setUser({
-                id: user.id,
+                id: user.value.id,
                 name: response.data.name,
                 email: response.data.email,
             });
             alert('プロフィールが更新されました！');
             isOpen.value = false;
             closeModal();
-            console.log(`🌴ユーザー編集後の状態::${JSON.stringify(user, null, 2)}`);
+            console.log(`🌴ユーザー編集後の状態::${JSON.stringify(user.value, null, 2)}`);
         } catch (error) {
             console.error('❌updateProfile:プロフィール更新失敗', error);
             alert('プロフィール更新に失敗しました。');
@@ -155,11 +160,11 @@ export const useUserStore = defineStore('user', () => {
 
 
 
-    const deleteUser = async (userId) => {
-        console.log('🔥deleteUser:removeUserから受けたデータ:', userId);
-        if (!userId) return;
+    const deleteUser = async () => {
+        console.log(`🔥削除するデータ:${JSON.stringify(user.value,null ,2)}`);
+        if (!user.value) return;
         try {
-            const response = await api.delete(`/user/${userId}`);
+            const response = await api.delete('/user/');
             console.log('📌 サーバーからの削除レスポンス:', response.data);
             user.value = {
                 id: null,

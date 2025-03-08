@@ -10,8 +10,10 @@
             <span class="block text-center px-2">{{userStore?.user?.email ||  'Not logged or undefined'}}</span>
 
             <div class="flex gap-2 px-2 py-6">
-                <button @click="editUser(userStore.user)" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Edit</button>
-                <button @click="removeUser(userStore.user.id)" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Delete</button>
+                <!-- <button @click="editUser(userStore.user)" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Edit</button> -->
+                <button @click="editUser()" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Edit</button>
+                <!-- <button @click="removeUser(userStore.user.id)" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Delete</button> -->
+                <button @click="removeUser()" class="min-w-[72px] w-20 bg-gray-600 text-white  mx-auto block text-center rounded ">Delete</button>
                 <router-link to="/" class="w-fit min-w-[72px] bg-gray-600 text-white text-sm   mx-auto block text-center rounded">戻る</router-link>
             </div>
 
@@ -32,22 +34,22 @@ import { onMounted } from "vue";
 const userStore = useUserStore();
 
 
-const editUser = (user) => {
-    if(!user){
+const editUser = () => {
+    if(!userStore.user){
         return;
     }
-    console.log('🔥モーダルに渡す編集するUser:',user);
-    userStore.openModal(user);
+    console.log('🔥モーダルに渡す編集するUser:',userStore.user);
+    userStore.openModal();
 };
 
 
 
-const removeUser = async (userId) => {
-    if(!userId) return;
-    console.log('🔥removeUser:削除するユーザー:',userId);
+const removeUser = async () => {
+    if(!userStore.user) return;
+    console.log('🔥removeUser:削除するユーザー:',userStore.user);
     if(confirm('ユーザーを削除しますか？')){
         try{
-            await userStore.deleteUser(userId);
+            await userStore.deleteUser();
             console.log('✅ removeUser: ユーザー削除リクエスト成功');
         }catch (error){
             console.error('❌removeUser:ユーザー削除の失敗',error);

@@ -1,24 +1,26 @@
 <template>
-    <section class="p-4">
-        <p class="text-center bg-gray-600 text-white mb-2">TaskList</p>
+    <section class="p-4 min-h-scree dark:bg-gray-800n">
+        <p class="text-center bg-gray-600 text-white mb-2 rounded">TaskList</p>
         <ul v-if="taskStore.tasks.length">
-            <li v-for="task in taskStore.tasks" :key="task.id" class="flex justify-between">
+            <li v-for="task in taskStore.tasks" :key="task.id" class="flex justify-between py-1">
                 <div class="flex justify-between">
                     <span class="px-2 inline-block">{{task.name}}</span>
                     <span class="px-2 inline-block">{{task.detail}}</span>
                     <span class="px-2 inline-block">{{task.deadline}}</span>
                 </div>
-                <div class="flex gap-2 px-2">
-                    <button @click="editTask(task)" class="min-w-[72px] w-20 bg-gray-600 text-white px-4 mx-auto block text-center rounded ">Edit</button>
-                    <button @click="removeTask(task.id)" class="min-w-[72px] w-20 bg-gray-600 text-white px-4 mx-auto block text-center rounded ">Delete</button>
+                <div class="flex gap-2 ">
+                    <button @click="editTask(task)" class="min-w-[72px] w-16 bg-gray-600 text-white mx-auto block text-center rounded text-sm hover:text-orange-400">Edit</button>
+                    <button @click="removeTask(task.id)" class="min-w-[72px] w-16 bg-gray-600 text-white mx-auto block text-center rounded text-sm hover:text-orange-400">Delete</button>
                 </div>
             </li>
         </ul>
-        <p v-else>タスクがありません</p>
+        <p v-else class="text-center py-4">No tasks...</p>
             <EditModal v-if="taskStore.isOpen">
                 <TaskEditForm />
             </EditModal>
-        <router-link to="/" class="w-fit min-w-[72px] bg-gray-600 text-white px-4 mx-auto block text-center rounded">戻る</router-link>
+            <div class="w-[260px] flex justify-between mx-auto gap-2 py-10 sm:w-[300px] md:w-[400px] lg:w-[400px]">
+                <router-link to="/" class="w-fit min-w-[72px] bg-gray-600 text-white px-4 mx-auto block text-center rounded py-2 hover:bg-gray-700">戻る</router-link>
+        </div>
     </section>
 </template>
 

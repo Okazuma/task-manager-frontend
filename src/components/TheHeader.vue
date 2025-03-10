@@ -17,6 +17,6 @@
 
 <style scoped>
 .router-link-active{
-    color:orange;
+    color:#fb923c;
 }
 </style>

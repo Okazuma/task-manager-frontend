@@ -1,10 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import UserRegister from '../views/UserRegister.vue'
-import UserLogin from '../views/UserLogin.vue'
-import UserProfile from '../views/UserProfile.vue'
-import TaskList from '../views/TaskList.vue'
-import TaskAdd from '../views/TaskAdd.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import UserRegister from '../views/UserRegister.vue';
+import UserLogin from '../views/UserLogin.vue';
+import UserProfile from '../views/UserProfile.vue';
+import TaskList from '../views/TaskList.vue';
+import TaskDetail from '../Views/TaskDetail.vue';
+import TaskAdd from '../views/TaskAdd.vue';
 
 
 const router = createRouter({
@@ -34,6 +35,11 @@ const router = createRouter({
       path: '/task-list',
       name: 'TaskList',
       component: TaskList,
+    },
+    {
+      path: '/task-detail/:id',
+      name: 'TaskDetail',
+      component: TaskDetail,
     },
     {
       path: '/task-add',

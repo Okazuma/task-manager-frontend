@@ -11,6 +11,7 @@ export const useTaskStore = defineStore('task', () => {
         id: null,
         name: '',
         detail: '',
+        category_id: 1,
         deadline: '',
     });
     const userStore = useUserStore();
@@ -66,9 +67,7 @@ export const useTaskStore = defineStore('task', () => {
             const response = await api.delete(`/tasks/${taskId}`)
             console.log('📌タスク削除のサーバーレスポンス:', response.data);
             tasks.value = tasks.value.filter(task => task.id !== taskId);
-            // console.log(`🔥削除して更新されたtasks:${JSON.stringify(tasks, null, 2)}`);
             console.log('🔥削除して更新されたtasks:',tasks);
-
         } catch (error) {
             console.error('❌deleteTask:タスク削除の失敗', error);
             alert('タスクの削除に失敗しました');
@@ -102,11 +101,12 @@ export const useTaskStore = defineStore('task', () => {
             const response = await api.put(`/tasks/${editingTask.value.id}`, {
                 name: editingTask.value.name,
                 detail: editingTask.value.detail,
+                category_id: editingTask.value.category_id,
                 deadline: editingTask.value.deadline,
                 user_id: userStore.user.id,
             });
             console.log('📌updateTask:サーバーレスポンス:',response.data);
-            tasks.value = tasks.value.map(task => task.id === editingTask.value.id ? { ...response.data } : task);
+            tasks.value = tasks.value.map(task => task.id === editingTask.value.id ? { ...response.data.task } : task);
             console.log(`🔥編集して更新されたtasks:${JSON.stringify(tasks.value, null, 2)}`);
             alert('タスクが更新されました');
             closeModal();

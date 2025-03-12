@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        titan:["Titan one" , "sans-serif"],
+      },
+    },
   },
   plugins: [],
   darkMode: 'class',

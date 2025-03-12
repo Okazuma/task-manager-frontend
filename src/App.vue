@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div :class="{ 'dark': themeStore.isDark }" class="min-h-screen w-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-white">
+    <div :class="{ 'dark': themeStore.isDark }" class="min-h-screen w-screen bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-white font-titan">
       <TheHeader />
       <router-view />
     </div>
@@ -12,5 +12,4 @@ import TheHeader from './components/TheHeader.vue';
 import { useThemeStore } from "./stores/theme";
 
 const themeStore = useThemeStore();
-
 </script>

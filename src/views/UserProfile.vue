@@ -9,10 +9,10 @@
                 <span for="email" class="block text-center py-2 border-b-2">Email</span>
                 <span class="block text-center mb-2 px-2">{{userStore?.user?.email ||  'Not available...'}}</span>
             </div>
-            <div class="w-[260px] flex justify-between gap-2 mx-auto py-10 sm:w-[300px] md:w-[400px] lg:w-[400px]">
-                <router-link to="/" class="min-w-[80px] bg-gray-600 text-white text-center rounded py-2 hover:text-orange-400">Back</router-link>
-                <button @click="editUser()" class="min-w-[80px]  bg-gray-600 text-white block text-center rounded py-2 hover:text-orange-400">Edit</button>
-                <button @click="removeUser()" class="min-w-[80px]  bg-gray-600 text-white block text-center rounded py-2 hover:text-orange-400">Delete</button>
+            <div class="w-[320px] flex justify-between gap-2 mx-auto py-10 sm:w-[360px] md:w-[480px] lg:w-[560px]">
+                <router-link to="/" class="min-w-[100px] bg-gray-600 text-white text-center rounded py-2 hover:text-orange-400 sm:w-[80px] md:w-[100px] lg:w-[120px]"><i class="fa-solid fa-left-long pr-1"></i>Back</router-link>
+                <button @click="editUser()" class="min-w-[100px]  bg-gray-600 text-white block text-center rounded py-2 hover:text-orange-400 sm:w-[80px] md:w-[100px] lg:w-[120px]">Edit<i class="fa-solid fa-file-pen pl-1"></i></button>
+                <button @click="removeUser()" class="min-w-[100px]  bg-gray-600 text-white block text-center rounded py-2 hover:text-orange-400 sm:w-[80px] md:w-[100px] lg:w-[120px]">Delete<i class="fa-solid fa-trash pl-1"></i></button>
             </div>
             <EditModal v-if="userStore.isOpen">
                 <UserEditForm />
@@ -32,7 +32,7 @@ const userStore = useUserStore();
 
 
 const editUser = () => {
-    if(!userStore.user){
+    if(!userStore.user.id){
         alert('ログイン情報がありません')
         return;
     }
@@ -43,7 +43,7 @@ const editUser = () => {
 
 
 const removeUser = async () => {
-    if(!userStore.user){
+    if(!userStore.user.id){
         alert('ログイン情報がありません');
         return;
     }

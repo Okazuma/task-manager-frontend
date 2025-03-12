@@ -1,4 +1,5 @@
 import { defineStore } from "pinia"
+import { useTaskStore } from "../stores/task";
 import { ref } from "vue"
 import api from "../api";
 
@@ -19,6 +20,7 @@ export const useUserStore = defineStore('user', () => {
         password: '',
     });
     const isPasswordChange = ref(false);
+    const taskStore = useTaskStore();
 
 
     const fetchUser = async () => {
@@ -121,6 +123,7 @@ export const useUserStore = defineStore('user', () => {
             const response = await api.post('/logout');
             console.log('📌 サーバーからのレスポンス:', response?.data);
             clearUser();
+            taskStore.clearTasks();
         } catch (error) {
             console.error('❌logoutUser:ログアウト失敗', error);
             console.log('📌 サーバーからのレスポンス:', error.response?.data);

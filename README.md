@@ -120,26 +120,26 @@
 
 - 1.リポジトリをクローン
 ```sh
-    git clone https://github.com/Okazuma/task-manager-frontend2.git
-    cd task-manager2-frontend
+git clone https://github.com/Okazuma/task-manager-frontend2.git
+cd task-manager2-frontend
 ```
 
 - 2.依存パッケージのインストール
 ```sh
-    npm install
+npm install
 ```
 
 - 3..env ファイルの作成
 ```sh
-    cp .env.example .env
+cp .env.example .env
 ```
-- .envの設定
-    .env の設定:  VITE_API_BASE_URL=http://localhost/api
+
+.env の設定:  VITE_API_BASE_URL=http://localhost/api
 
 
 - 4.開発サーバーの起動
 ```sh
-    npm run dev
+npm run dev
 ```
 
 ### 開発サーバーが起動しない場合
@@ -152,13 +152,13 @@
 
 ### トラブルシューティング
 - npm install でエラーが発生する場合
-    ```sh
-    rm -rf node_modules package-lock.json
-    npm install
-    ```
+```sh
+rm -rf node_modules package-lock.json
+npm install
+```
 
 - ポート 3000 がすでに使用されている場合
-    他のアプリが 5173 番ポートを使用していないか確認
-    ```sh
-    npx kill-port 5173
-    ```
+他のアプリが 5173 番ポートを使用していないか確認
+```sh
+npx kill-port 5173
+```

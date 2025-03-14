@@ -133,10 +133,9 @@
 ```sh
     cp .env.example .env
 ```
-    .envの設定
-```sh
+- .envの設定
     .env の設定:  VITE_API_BASE_URL=http://localhost/api
-```
+
 
 - 4.開発サーバーの起動
 ```sh

@@ -120,8 +120,8 @@
 
 - 1.リポジトリをクローン
 ```sh
-git clone https://github.com/Okazuma/task-manager-frontend2.git
-cd task-manager2-frontend
+git clone https://github.com/Okazuma/task-manager-frontend.git
+cd task-manager-frontend
 ```
 
 - 2.依存パッケージのインストール
@@ -133,13 +133,19 @@ npm install
 ```sh
 cp .env.example .env
 ```
-    .env の設定:  VITE_API_BASE_URL=http://localhost/api
+
+- 4..env の設定
+```env
+VITE_API_BASE_URL = http://localhost/api
+```
 
 
-- 4.開発サーバーの起動
+- 5.開発サーバーの起動
 ```sh
 npm run dev
 ```
+
+
 
 ### 開発サーバーが起動しない場合
 - .env の VITE_API_BASE_URL を正しく設定

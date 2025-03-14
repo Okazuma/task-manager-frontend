@@ -24,6 +24,9 @@ export const useTaskStore = defineStore('task', () => {
             setTasks(response.data.tasks);
         } catch (error) {
             console.error('❌タスクの取得失敗', error);
+            if (error.response) {
+                console.log('エラー時のレスポンス',error.response.date);
+            }
         }
     };
 
@@ -94,6 +97,9 @@ export const useTaskStore = defineStore('task', () => {
 
 
     const updateTask = async () => {
+        if (!confirm('ユーザー情報を更新しますか？')) {
+            return;
+        }
         if (!editingTask.value.id) {
             return;
         }

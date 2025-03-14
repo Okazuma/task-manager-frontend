@@ -1,5 +1,5 @@
 <template>
-    <section class="p-4 min-h-screen">
+    <section class="p-4  w-full font-titan">
         <p class="text-center bg-gray-600 text-white mb-2 rounded">Register</p>
         <form @submit.prevent="handleRegister">
             <label for="name" class="block text-center py-2">
@@ -14,10 +14,9 @@
                 <span>Password</span>
                 <input id="password" type="password" v-model="userForm.password" class="text-gray-800 block mx-auto mb-2 px-2 border-2 rounded w-[280px] sm:w-[320px] md:w-[400px] lg:w-[480px]">
             </label>
-
-            <div class="flex justify-between mx-auto py-10 w-[280px] sm:w-[320px] md:w-[480px] lg:w-[560px]">
-                <router-link to="/" class="w-[120px] bg-gray-600 text-white  mx-auto px-4 py-2 block text-center rounded hover:text-orange-400"><i class="fa-solid fa-left-long pr-1"></i>Back</router-link>
-                <button type="submit" class="w-[120px] bg-gray-600 text-white  mx-auto px-4 py-2 block text-center rounded hover:text-orange-400">Submit<i class="fa-solid fa-right-long pl-1"></i></button>
+            <div class="flex justify-between mx-auto py-10 w-[280px] sm:w-[320px] md:w-[320px] lg:w-[400px]">
+                <router-link to="/" class="min-w-[100px] bg-gray-600 text-white p-2 block text-center rounded hover:text-orange-400"><i class="fa-solid fa-left-long pr-1"></i>Back</router-link>
+                <button type="submit" class="min-w-[100px] bg-gray-600 text-white p-2 block text-center rounded hover:text-orange-400">Submit<i class="fa-solid fa-right-long pl-1"></i></button>
             </div>
         </form>
     </section>

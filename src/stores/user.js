@@ -135,6 +135,9 @@ export const useUserStore = defineStore('user', () => {
     const updateUser = async () => {
         console.log(`🔥モーダルが表示するUser:${JSON.stringify(user.value, null, 2)}`);
 
+        if (!confirm('ユーザー情報を更新しますか？')) {
+            return;
+        }
         const newUser = {
             name: editingUser.value.name,
             email: editingUser.value.email,

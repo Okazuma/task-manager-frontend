@@ -1,18 +1,18 @@
 <template>
-    <section class="p-4">
-        <p class="text-center bg-gray-600 text-white mb-2 rounded">Login</p>
-            <div class="">
-                <span for="name" class="block text-center py-2 border-b-2">Name</span>
-                <span class="block text-center mb-2 px-2">{{userStore?.user?.name ||  'Guest user'}}</span>
+    <section class="p-4 w-full">
+        <p class="text-center bg-gray-600 text-white mb-2 rounded font-titan">Login</p>
+            <div>
+                <span for="name" class="block text-center py-2 border-b-2 font-titan">Name</span>
+                <span class="block text-center mb-2 px-2 font-bold">{{userStore?.user?.name ||  'Guest user'}}</span>
             </div>
             <div class="py-2">
-                <span for="email" class="block text-center py-2 border-b-2">Email</span>
-                <span class="block text-center mb-2 px-2">{{userStore?.user?.email ||  'Not available...'}}</span>
+                <span for="email" class="block text-center py-2 border-b-2 font-titan">Email</span>
+                <span class="block text-center mb-2 px-2 font-bold">{{userStore?.user?.email ||  'Not available...'}}</span>
             </div>
-            <div class="w-[320px] flex justify-between gap-2 mx-auto py-10 sm:w-[360px] md:w-[480px] lg:w-[560px]">
-                <router-link to="/" class="min-w-[100px] bg-gray-600 text-white text-center rounded py-2 hover:text-orange-400 sm:w-[80px] md:w-[100px] lg:w-[120px]"><i class="fa-solid fa-left-long pr-1"></i>Back</router-link>
-                <button @click="editUser()" class="min-w-[100px]  bg-gray-600 text-white block text-center rounded py-2 hover:text-orange-400 sm:w-[80px] md:w-[100px] lg:w-[120px]">Edit<i class="fa-solid fa-file-pen pl-1"></i></button>
-                <button @click="removeUser()" class="min-w-[100px]  bg-gray-600 text-white block text-center rounded py-2 hover:text-orange-400 sm:w-[80px] md:w-[100px] lg:w-[120px]">Delete<i class="fa-solid fa-trash pl-1"></i></button>
+            <div class="w-[280px] flex justify-between gap-2 mx-auto py-10 sm:w-[320px] md:w-[320px] lg:w-[400px] font-titan">
+                <router-link to="/" class="min-w-[80px] bg-gray-600 text-white text-center rounded py-2 hover:text-orange-400 sm:w-[100px] md:w-[100px] lg:w-[120px]"><i class="fa-solid fa-left-long pr-1"></i>Back</router-link>
+                <button @click="editUser()" class="min-w-[80px]  bg-gray-600 text-white block text-center rounded p-2 hover:text-orange-400 sm:w-[100px] md:w-[100px] lg:w-[120px]">Edit<i class="fa-solid fa-file-pen pl-1"></i></button>
+                <button @click="removeUser()" class="min-w-[80px]  bg-gray-600 text-white block text-center rounded py-2 hover:text-orange-400 sm:w-[100px] md:w-[100px] lg:w-[120px]">Delete<i class="fa-solid fa-trash pl-1"></i></button>
             </div>
             <EditModal v-if="userStore.isOpen">
                 <UserEditForm />

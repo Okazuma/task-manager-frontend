@@ -133,8 +133,7 @@ npm install
 ```sh
 cp .env.example .env
 ```
-
-.env の設定:  VITE_API_BASE_URL=http://localhost/api
+    .env の設定:  VITE_API_BASE_URL=http://localhost/api
 
 
 - 4.開発サーバーの起動
@@ -158,7 +157,7 @@ npm install
 ```
 
 - ポート 3000 がすでに使用されている場合
-他のアプリが 5173 番ポートを使用していないか確認
+    他のアプリが 5173 番ポートを使用していないか確認
 ```sh
 npx kill-port 5173
 ```

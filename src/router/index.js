@@ -7,7 +7,6 @@ import TaskList from '../views/TaskList.vue';
 import TaskDetail from '../Views/TaskDetail.vue';
 import TaskAdd from '../views/TaskAdd.vue';
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -47,6 +46,6 @@ const router = createRouter({
       component: TaskAdd,
     },
   ],
-})
+});
 
-export default router
+export default router;
